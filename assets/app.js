@@ -35,7 +35,7 @@ var map, infoWindow, pos, startLatitude, startLongitude, endLatitude, endLongitu
 
 //   This example requires the Places library. Include the libraries=places
 //   parameter when you first load the API. For example:
-
+$(document).ready(function() {
 function initAutocomplete() {
   map = new google.maps.Map(document.getElementById('googlemaps'), {
     center: {lat: 40, lng: -100},
@@ -153,7 +153,7 @@ function initAutocomplete() {
 
 
 //Calling the function when uber button is clicked
-$(document).ready(function() {
+
   initAutocomplete();
   
   $("#uberBtn").click(function(e) {
