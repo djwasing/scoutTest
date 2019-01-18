@@ -211,15 +211,15 @@ $(document).ready(function() {
   //Function to set the header for the authorization key
   function setHeader(xhr) {
   
-      database.ref().on("value", function(snapshot){
-        var token = (snapshot.val().Uber.UberKey);
-        xhr.setRequestHeader("Authorization", + token);
-        xhr.setRequestHeader("Access-Control-Allow-Origin","*");
-  
-      })
-  }
+    //database.ref().on("value", function(snapshot){
+      var token = "JA.VUNmGAAAAAAAEgASAAAABwAIAAwAAAAAAAAAEgAAAAAAAAG8AAAAFAAAAAAADgAQAAQAAAAIAAwAAAAOAAAAkAAAABwAAAAEAAAAEAAAAPwqOP3m-X0rOweEw5hGnhpsAAAAAu6sKlqtlNn30XjyGBffSHfoUnLbYVhKFQcRXS3EsOgY7X1rC_bcnc8ys9_yi_DvgGIqeWZGLX7j5Nb7A0fA85B19ya4zALR9Asjb5bAzB7PTtNMTZ6Ok7vJ1zeWlkMcXzcjmJ9KNcwUhNXpDAAAAG2oTu7jIRek50SxxCQAAABiMGQ4NTgwMy0zOGEwLTQyYjMtODA2ZS03YTRjZjhlMTk2ZWU";
+      xhr.setRequestHeader("Authorization", + token);
+      xhr.setRequestHeader("Access-Control-Allow-Origin","*");
 
-  uberTestPrice();
-  uberTestETA();
+    //})
+}
+
+uberTestPrice();
+uberTestETA();
 });
 });
