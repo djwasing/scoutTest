@@ -106,9 +106,8 @@ function initAutocomplete() {
     });
     map.fitBounds(bounds);
   });
-}
 
-// Try HTML5 geolocation.
+  // Try HTML5 geolocation.
 //google.maps.event.addListenerOnce(map, 'idle', function() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -134,6 +133,9 @@ function initAutocomplete() {
   handleLocationError(false, infoWindow, map.getCenter());
   }
 //})
+}
+
+
 
 
 
