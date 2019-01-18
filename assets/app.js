@@ -109,29 +109,32 @@ function initAutocomplete() {
 }
 
 // Try HTML5 geolocation.
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(function(position) {
-    pos = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude
-    };
+//google.maps.event.addListenerOnce(map, 'idle', function() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      
+      infoWindow.setPosition(pos);
+      infoWindow.setContent("Your Location");
+      infoWindow.open(map);
+      map.setCenter(pos);
+      startLatitude = (pos.lat);        
+      startLongitude = (pos.lng);
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
     
-    infoWindow.setPosition(pos);
-    infoWindow.setContent("Your Location");
-    infoWindow.open(map);
-    map.setCenter(pos);
-    startLatitude = (pos.lat);        
-    startLongitude = (pos.lng);
-  }, function() {
-    handleLocationError(true, infoWindow, map.getCenter());
-  });
+  } 
   
-} 
+  else {
+  // Browser doesn’t support Geolocation
+  handleLocationError(false, infoWindow, map.getCenter());
+  }
+//})
 
-else {
-// Browser doesn’t support Geolocation
-handleLocationError(false, infoWindow, map.getCenter());
-}
 
 
 
@@ -149,6 +152,7 @@ handleLocationError(false, infoWindow, map.getCenter());
 
 //Calling the function when uber button is clicked
 $(document).ready(function() {
+  initAutocomplete();
   
   $("#uberBtn").click(function(e) {
     e.preventDefault();
@@ -163,16 +167,23 @@ $(document).ready(function() {
     // console.log("THis is the URL for ETA " + queryURLETA);
 
 
+    jQuery.ajaxPrefilter(function(options) {
+      if (options.crossDomain && jQuery.support.cors) {
+          options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
+      }
+    });
 
 //Function for Uber AJAX Prices
 
   function uberTestPrice() {
+    
+  
 
   jQuery.ajax({
               type: "GET",
               url: queryURLPrice, 
               crossDomain: true,
-              beforeSend: setHeader, 
+              //beforeSend: setHeader, 
                
   
           }).then(function(response){
@@ -190,12 +201,14 @@ $(document).ready(function() {
   }
   //Function calling the Uber ETA for Times
   function uberTestETA() {
-  
+    
+
+
   jQuery.ajax({
               type: "GET",
               url: queryURLETA, 
               crossDomain: true,
-              beforeSend: setHeader, 
+              //beforeSend: setHeader, 
               
   
           }).then(function(response){
@@ -210,16 +223,19 @@ $(document).ready(function() {
   }
   //Function to set the header for the authorization key
   function setHeader(xhr) {
-  
-    //database.ref().on("value", function(snapshot){
-      var token = "JA.VUNmGAAAAAAAEgASAAAABwAIAAwAAAAAAAAAEgAAAAAAAAG8AAAAFAAAAAAADgAQAAQAAAAIAAwAAAAOAAAAkAAAABwAAAAEAAAAEAAAAPwqOP3m-X0rOweEw5hGnhpsAAAAAu6sKlqtlNn30XjyGBffSHfoUnLbYVhKFQcRXS3EsOgY7X1rC_bcnc8ys9_yi_DvgGIqeWZGLX7j5Nb7A0fA85B19ya4zALR9Asjb5bAzB7PTtNMTZ6Ok7vJ1zeWlkMcXzcjmJ9KNcwUhNXpDAAAAG2oTu7jIRek50SxxCQAAABiMGQ4NTgwMy0zOGEwLTQyYjMtODA2ZS03YTRjZjhlMTk2ZWU";
+    
+    database.ref().on("value", function(snapshot){
+      var token = (snapshot.val().Uber.UberKey);
       xhr.setRequestHeader("Authorization", + token);
       xhr.setRequestHeader("Access-Control-Allow-Origin","*");
 
-    //})
+    })
 }
 
 uberTestPrice();
 uberTestETA();
 });
-});
+}); 
+
+
+
